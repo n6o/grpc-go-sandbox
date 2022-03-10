@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/n6o/grpc-go-sandbox/gen-client;gen_client";
+
+package sandbox;
+
+service Echo {
+  rpc Echo (EchoRequest) returns (EchoResponse) {}
+}
+
+message EchoRequest {
+  string soound = 1;
+}
+
+message EchoResponse {
+  string soound = 1;
+}
