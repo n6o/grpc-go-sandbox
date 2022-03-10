@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/n6o/grpc-go-sandbox;grpc_go_sandbox";
+option go_package = "github.com/n6o/grpc-go-sandbox/gen-client;gen_client";
 
 package sandbox;
 
