@@ -19,6 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EchoClient interface {
 	Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
+	CallMountain(ctx context.Context, in *CallMountainRequest, opts ...grpc.CallOption) (*CallMountainResponse, error)
 }
 
 type echoClient struct {
@@ -38,11 +39,21 @@ func (c *echoClient) Echo(ctx context.Context, in *EchoRequest, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *echoClient) CallMountain(ctx context.Context, in *CallMountainRequest, opts ...grpc.CallOption) (*CallMountainResponse, error) {
+	out := new(CallMountainResponse)
+	err := c.cc.Invoke(ctx, "/sandbox.Echo/CallMountain", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EchoServer is the server API for Echo service.
 // All implementations must embed UnimplementedEchoServer
 // for forward compatibility
 type EchoServer interface {
 	Echo(context.Context, *EchoRequest) (*EchoResponse, error)
+	CallMountain(context.Context, *CallMountainRequest) (*CallMountainResponse, error)
 	mustEmbedUnimplementedEchoServer()
 }
 
@@ -52,6 +63,9 @@ type UnimplementedEchoServer struct {
 
 func (UnimplementedEchoServer) Echo(context.Context, *EchoRequest) (*EchoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Echo not implemented")
+}
+func (UnimplementedEchoServer) CallMountain(context.Context, *CallMountainRequest) (*CallMountainResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CallMountain not implemented")
 }
 func (UnimplementedEchoServer) mustEmbedUnimplementedEchoServer() {}
 
@@ -84,6 +98,24 @@ func _Echo_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Echo_CallMountain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CallMountainRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EchoServer).CallMountain(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/sandbox.Echo/CallMountain",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EchoServer).CallMountain(ctx, req.(*CallMountainRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Echo_ServiceDesc is the grpc.ServiceDesc for Echo service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +126,10 @@ var Echo_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Echo",
 			Handler:    _Echo_Echo_Handler,
+		},
+		{
+			MethodName: "CallMountain",
+			Handler:    _Echo_CallMountain_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
