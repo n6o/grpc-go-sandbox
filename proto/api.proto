@@ -4,8 +4,11 @@ option go_package = "github.com/n6o/grpc-go-sandbox/gen-client;gen_client";
 
 package sandbox;
 
+import "validate/validate.proto";
+
 service Echo {
   rpc Echo (EchoRequest) returns (EchoResponse) {}
+  rpc CallMountain(CallMountainRequest) returns (CallMountainResponse) {}
 }
 
 message EchoRequest {
@@ -14,4 +17,12 @@ message EchoRequest {
 
 message EchoResponse {
   string soound = 1;
+}
+
+message CallMountainRequest {
+  string name = 1 [(validate.rules).string.len = 5];
+}
+
+message CallMountainResponse {
+  string name = 1;
 }
