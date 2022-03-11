@@ -1,3 +1,18 @@
 module github.com/n6o/grpc-go-sandbox/client
 
 go 1.17
+
+require (
+	github.com/n6o/grpc-go-sandbox/gen-client v0.0.0-20220311143259-3c1389f95a97
+	google.golang.org/grpc v1.45.0
+)
+
+require (
+	github.com/golang/mock v1.6.0
+	github.com/golang/protobuf v1.5.2 // indirect
+	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
+	golang.org/x/sys v0.0.0-20210816183151-1e6c022a8912 // indirect
+	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
+)
