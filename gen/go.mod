@@ -1,4 +1,4 @@
-module sandbox-gen
+module github.com/n6o/grpc-go-sandbox/sandbox-gen
 
 go 1.18
 
